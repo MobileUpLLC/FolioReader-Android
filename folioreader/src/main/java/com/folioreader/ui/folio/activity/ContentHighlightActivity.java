@@ -25,7 +25,7 @@ public class ContentHighlightActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_highlight);
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) getSupportActionBar().hide();
         mConfig = AppUtil.getSavedConfig(this);
         mIsNightMode = mConfig.isNightMode();
         initViews();
@@ -87,7 +87,7 @@ public class ContentHighlightActivity extends AppCompatActivity {
         findViewById(R.id.btn_contents).setSelected(false);
         findViewById(R.id.btn_highlights).setSelected(true);
         String bookId = getIntent().getStringExtra(FolioReader.INTENT_BOOK_ID);
-        String bookTitle= getIntent().getStringExtra(Constants.BOOK_TITLE);
+        String bookTitle = getIntent().getStringExtra(Constants.BOOK_TITLE);
         HighlightFragment highlightFragment = HighlightFragment.newInstance(bookId, bookTitle);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.parent, highlightFragment);
