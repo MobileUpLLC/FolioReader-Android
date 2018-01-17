@@ -355,9 +355,10 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
                 mediaController.setUpMediaPlayer(spineItem.mediaOverlay, spineItem.mediaOverlay.getAudioPath(spineItem.href), mBookTitle);
             }
             mConfig = AppUtil.getSavedConfig(getActivity());
-            String path = ref.substring(0, ref.lastIndexOf('/'));
+            int lastDividerIndex = ref.lastIndexOf('/');
+            String path = lastDividerIndex > 0 ? ref.substring(0, lastDividerIndex + 1) : "";
             mWebview.loadDataWithBaseURL(
-                    Constants.LOCALHOST + mBookTitle + "/" + path + "/",
+                    Constants.LOCALHOST + mBookTitle + "/" + path,
                     HtmlUtil.getHtmlContent(getActivity(), mHtmlString, mConfig),
                     "text/html",
                     "UTF-8",
