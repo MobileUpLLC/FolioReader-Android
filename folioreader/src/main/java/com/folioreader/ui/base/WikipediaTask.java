@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -35,7 +36,7 @@ public class WikipediaTask extends AsyncTask<String, Void, Wikipedia> {
         String strUrl = strings[0];
         try {
             URL url = new URL(strUrl);
-            URLConnection urlConnection = url.openConnection();
+            URLConnection urlConnection = url.openConnection(Proxy.NO_PROXY);
             InputStream inputStream = urlConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, AppUtil.charsetNameForURLConnection(urlConnection)));
             StringBuilder stringBuilder = new StringBuilder();
