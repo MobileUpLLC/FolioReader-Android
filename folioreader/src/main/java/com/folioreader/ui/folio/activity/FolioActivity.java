@@ -171,6 +171,7 @@ public class FolioActivity
                 intent.putExtra(CHAPTER_SELECTED, mSpineReferenceList.get(mChapterPosition).href);
                 intent.putExtra(FolioReader.INTENT_BOOK_ID, mBookId);
                 intent.putExtra(Constants.BOOK_TITLE, bookFileName);
+                intent.putExtra(Constants.PORT_NUMBER, mEpubServer.getListeningPort());
                 startActivityForResult(intent, ACTION_CONTENT_HIGHLIGHT);
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
             }
@@ -203,14 +204,14 @@ public class FolioActivity
 
     private void initBook(String mEpubFileName, int mEpubRawId, String mEpubFilePath, EpubSourceType mEpubSourceType) {
         try {
-            int portNumber = getIntent().getIntExtra(Config.INTENT_PORT, Constants.PORT_NUMBER);
+            int portNumber = getIntent().getIntExtra(Config.INTENT_PORT, Constants.DEFAULT_PORT_NUMBER);
             mEpubServer = EpubServerSingleton.getEpubServerInstance(portNumber);
             mEpubServer.start();
             String path = FileUtil.saveEpubFileAndLoadLazyBook(FolioActivity.this, mEpubSourceType, mEpubFilePath,
                     mEpubRawId, mEpubFileName);
             addEpub(path);
 
-            String urlString = Constants.LOCALHOST + bookFileName + "/manifest";
+            String urlString = Constants.LOCALHOST + ":" + mEpubServer.getListeningPort() + "/" + bookFileName + "/manifest";
             new MainPresenter(this).parseManifest(urlString);
 
         } catch (IOException e) {
@@ -245,7 +246,7 @@ public class FolioActivity
             mFolioPageViewPager.setDirection(DirectionalViewpager.Direction.VERTICAL);
             mFolioPageFragmentAdapter =
                     new FolioPageFragmentAdapter(getSupportFragmentManager(),
-                            mSpineReferenceList, bookFileName, mBookId);
+                            mSpineReferenceList, bookFileName, mBookId, mEpubServer.getListeningPort());
             mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
             mFolioPageViewPager.setOffscreenPageLimit(1);
             mFolioPageViewPager.setCurrentItem(mChapterPosition);
@@ -254,7 +255,7 @@ public class FolioActivity
             mFolioPageViewPager.setDirection(DirectionalViewpager.Direction.HORIZONTAL);
             mFolioPageFragmentAdapter =
                     new FolioPageFragmentAdapter(getSupportFragmentManager(),
-                            mSpineReferenceList, bookFileName, mBookId);
+                            mSpineReferenceList, bookFileName, mBookId, mEpubServer.getListeningPort());
             mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
             mFolioPageViewPager.setCurrentItem(mChapterPosition);
         }
@@ -283,7 +284,8 @@ public class FolioActivity
         });
 
         if (mSpineReferenceList != null) {
-            mFolioPageFragmentAdapter = new FolioPageFragmentAdapter(getSupportFragmentManager(), mSpineReferenceList, bookFileName, mBookId);
+            mFolioPageFragmentAdapter = new FolioPageFragmentAdapter(getSupportFragmentManager(),
+                    mSpineReferenceList, bookFileName, mBookId, mEpubServer.getListeningPort());
             mFolioPageViewPager.setAdapter(mFolioPageFragmentAdapter);
         }
 

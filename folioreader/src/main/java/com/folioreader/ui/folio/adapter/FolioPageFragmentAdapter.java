@@ -17,17 +17,25 @@ public class FolioPageFragmentAdapter extends FragmentStatePagerAdapter {
     private List<Link> mSpineReferences;
     private String mEpubFileName;
     private String mBookId;
+    private int mEpubServerPort;
 
-    public FolioPageFragmentAdapter(FragmentManager fm, List<Link> spineReferences, String epubFileName, String bookId) {
+    public FolioPageFragmentAdapter(FragmentManager fm, List<Link> spineReferences, String epubFileName, String bookId, int epubServerPort) {
         super(fm);
         this.mSpineReferences = spineReferences;
         this.mEpubFileName = epubFileName;
         this.mBookId = bookId;
+        this.mEpubServerPort = epubServerPort;
     }
 
     @Override
     public Fragment getItem(int position) {
-        FolioPageFragment mFolioPageFragment = FolioPageFragment.newInstance(position, mEpubFileName, mSpineReferences.get(position),mBookId);
+        FolioPageFragment mFolioPageFragment = FolioPageFragment.newInstance(
+                position,
+                mEpubFileName,
+                mSpineReferences.get(position),
+                mBookId,
+                mEpubServerPort
+        );
         mFolioPageFragment.setFragmentPos(position);
         return mFolioPageFragment;
     }

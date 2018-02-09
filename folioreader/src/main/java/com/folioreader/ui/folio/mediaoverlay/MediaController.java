@@ -128,12 +128,12 @@ public class MediaController {
         });
     }
 
-    public void setUpMediaPlayer(MediaOverlays mediaOverlays, String path, String mBookTitle) {
+    public void setUpMediaPlayer(MediaOverlays mediaOverlays, String path, String mBookTitle, int epubServerPort) {
         this.mediaOverlays = mediaOverlays;
         mediaHandler = new Handler();
         try {
             mediaItemPosition = 0;
-            String uri = Constants.LOCALHOST + mBookTitle + "/" + path;
+            String uri = Constants.LOCALHOST + ":" + epubServerPort + "/" + mBookTitle + "/" + path;
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(uri);
             mediaPlayer.prepare();
