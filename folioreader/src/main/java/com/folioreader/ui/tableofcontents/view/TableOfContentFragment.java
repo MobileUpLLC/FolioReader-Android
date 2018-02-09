@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import static com.folioreader.Constants.BOOK_TITLE;
 import static com.folioreader.Constants.CHAPTER_SELECTED;
+import static com.folioreader.Constants.PORT_NUMBER;
 import static com.folioreader.Constants.SELECTED_CHAPTER_POSITION;
 import static com.folioreader.Constants.TYPE;
 
@@ -37,12 +38,14 @@ public class TableOfContentFragment extends Fragment implements TOCMvpView, TOCA
     private TextView errorView;
     private Config mConfig;
     private String mBookTitle;
+    private int mEpubServerPort;
 
-    public static TableOfContentFragment newInstance(String selectedChapterHref, String bookTitle) {
+    public static TableOfContentFragment newInstance(String selectedChapterHref, String bookTitle, int epubServerPort) {
         TableOfContentFragment tableOfContentFragment = new TableOfContentFragment();
         Bundle args = new Bundle();
         args.putString(SELECTED_CHAPTER_POSITION, selectedChapterHref);
         args.putString(BOOK_TITLE, bookTitle);
+        args.putInt(PORT_NUMBER, epubServerPort);
         tableOfContentFragment.setArguments(args);
         return tableOfContentFragment;
     }
@@ -59,6 +62,7 @@ public class TableOfContentFragment extends Fragment implements TOCMvpView, TOCA
         View mRootView = inflater.inflate(R.layout.fragment_contents, container, false);
         mConfig = AppUtil.getSavedConfig(getActivity());
         mBookTitle = getArguments().getString(BOOK_TITLE);
+        mEpubServerPort = getArguments().getInt(PORT_NUMBER);
         if (mConfig.isNightMode()) {
             mRootView.findViewById(R.id.recycler_view_menu).
                     setBackgroundColor(ContextCompat.getColor(getActivity(),
@@ -72,7 +76,7 @@ public class TableOfContentFragment extends Fragment implements TOCMvpView, TOCA
         super.onViewCreated(view, savedInstanceState);
         mTableOfContentsRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_menu);
         errorView = (TextView) view.findViewById(R.id.tv_error);
-        String urlString = Constants.LOCALHOST + mBookTitle + "/manifest";
+        String urlString = Constants.LOCALHOST + ":" + mEpubServerPort + "/" + mBookTitle + "/manifest";
 
         configRecyclerViews();
         presenter.getTOCContent(urlString);

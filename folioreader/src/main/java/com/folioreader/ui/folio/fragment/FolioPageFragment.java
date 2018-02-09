@@ -80,6 +80,7 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
     public static final String KEY_FRAGMENT_FOLIO_POSITION = "com.folioreader.ui.folio.fragment.FolioPageFragment.POSITION";
     public static final String KEY_FRAGMENT_FOLIO_BOOK_TITLE = "com.folioreader.ui.folio.fragment.FolioPageFragment.BOOK_TITLE";
     public static final String KEY_FRAGMENT_EPUB_FILE_NAME = "com.folioreader.ui.folio.fragment.FolioPageFragment.EPUB_FILE_NAME";
+    private static final String KEY_FRAGMENT_EPUB_SERVER_PORT = "com.folioreader.ui.folio.fragment.FolioPageFragment.KEY_FRAGMENT_EPUB_SERVER_PORT";
     private static final String KEY_IS_SMIL_AVAILABLE = "com.folioreader.ui.folio.fragment.FolioPageFragment.IS_SMIL_AVAILABLE";
     public static final String TAG = FolioPageFragment.class.getSimpleName();
 
@@ -131,6 +132,7 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
     private int mPosition = -1;
     private String mBookTitle;
     private String mEpubFileName = null;
+    private int mEpubServerPort;
     private int mPos;
     private boolean mIsPageReloaded;
     private int mLastWebviewScrollpos;
@@ -141,13 +143,14 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
     private Config mConfig;
     private String mBookId;
 
-    public static FolioPageFragment newInstance(int position, String bookTitle, Link spineRef, String bookId) {
+    public static FolioPageFragment newInstance(int position, String bookTitle, Link spineRef, String bookId, int epubServerPort) {
         FolioPageFragment fragment = new FolioPageFragment();
         Bundle args = new Bundle();
         args.putInt(KEY_FRAGMENT_FOLIO_POSITION, position);
         args.putString(KEY_FRAGMENT_FOLIO_BOOK_TITLE, bookTitle);
-        args.putString(FolioReader.INTENT_BOOK_ID, bookId);
         args.putSerializable(SPINE_ITEM, spineRef);
+        args.putString(FolioReader.INTENT_BOOK_ID, bookId);
+        args.putSerializable(KEY_FRAGMENT_EPUB_SERVER_PORT, epubServerPort);
         fragment.setArguments(args);
         return fragment;
     }
@@ -162,12 +165,14 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
             mPosition = savedInstanceState.getInt(KEY_FRAGMENT_FOLIO_POSITION);
             mBookTitle = savedInstanceState.getString(KEY_FRAGMENT_FOLIO_BOOK_TITLE);
             mEpubFileName = savedInstanceState.getString(KEY_FRAGMENT_EPUB_FILE_NAME);
+            mEpubServerPort = savedInstanceState.getInt(KEY_FRAGMENT_EPUB_SERVER_PORT);
             mBookId = getArguments().getString(FolioReader.INTENT_BOOK_ID);
             spineItem = (Link) savedInstanceState.getSerializable(SPINE_ITEM);
         } else {
             mPosition = getArguments().getInt(KEY_FRAGMENT_FOLIO_POSITION);
             mBookTitle = getArguments().getString(KEY_FRAGMENT_FOLIO_BOOK_TITLE);
             mEpubFileName = getArguments().getString(KEY_FRAGMENT_EPUB_FILE_NAME);
+            mEpubServerPort = getArguments().getInt(KEY_FRAGMENT_EPUB_SERVER_PORT);
             spineItem = (Link) getArguments().getSerializable(SPINE_ITEM);
             mBookId = getArguments().getString(FolioReader.INTENT_BOOK_ID);
         }
@@ -202,7 +207,7 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
 
 
     private String getWebviewUrl() {
-        return Constants.LOCALHOST + mBookTitle + "/" + spineItem.href;
+        return Constants.LOCALHOST + ":" + mEpubServerPort + "/" + mBookTitle + "/" + spineItem.href;
     }
 
     @Override
@@ -352,13 +357,18 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
             String ref = spineItem.href;
             if (!reloaded && spineItem.properties.contains("media-overlay")) {
                 mediaController.setSMILItems(SMILParser.parseSMIL(mHtmlString));
-                mediaController.setUpMediaPlayer(spineItem.mediaOverlay, spineItem.mediaOverlay.getAudioPath(spineItem.href), mBookTitle);
+                mediaController.setUpMediaPlayer(
+                        spineItem.mediaOverlay,
+                        spineItem.mediaOverlay.getAudioPath(spineItem.href),
+                        mBookTitle,
+                        mEpubServerPort
+                );
             }
             mConfig = AppUtil.getSavedConfig(getActivity());
             int lastDividerIndex = ref.lastIndexOf('/');
             String path = lastDividerIndex > 0 ? ref.substring(0, lastDividerIndex + 1) : "";
             mWebview.loadDataWithBaseURL(
-                    Constants.LOCALHOST + mBookTitle + "/" + path,
+                    Constants.LOCALHOST + ":" + mEpubServerPort + "/" + mBookTitle + "/" + path,
                     HtmlUtil.getHtmlContent(getActivity(), mHtmlString, mConfig),
                     "text/html",
                     "UTF-8",
