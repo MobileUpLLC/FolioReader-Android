@@ -779,10 +779,6 @@ public class FolioPageFragment extends Fragment implements HtmlTaskCallback, Med
                 getString(R.string.copy)));
         quickAction.addActionItem(new ActionItem(ACTION_ID_HIGHLIGHT,
                 getString(R.string.highlight)));
-        if (!mSelectedText.trim().contains(" ")) {
-            quickAction.addActionItem(new ActionItem(ACTION_ID_DEFINE,
-                    getString(R.string.define)));
-        }
         quickAction.addActionItem(new ActionItem(ACTION_ID_SHARE,
                 getString(R.string.share)));
         quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
