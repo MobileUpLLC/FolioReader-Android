@@ -9,7 +9,7 @@ android {
   }
 
   compileSdkVersion 27
-  buildToolsVersion "27.0.0"
+  buildToolsVersion "27.0.3"
 
   defaultConfig {
     applicationId "com.folioreader.android.sample"
@@ -66,5 +66,5 @@ android {
 
 dependencies {
   compile project(':folioreader')
-  compile 'com.android.support:appcompat-v7:27.0.0'
+  compile 'com.android.support:appcompat-v7:27.1.1'
 }
