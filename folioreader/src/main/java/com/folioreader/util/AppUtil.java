@@ -162,6 +162,7 @@ public class AppUtil {
             obj.put(Config.CONFIG_IS_NIGHTMODE, config.isNightMode());
             obj.put(Config.CONFIG_IS_THEMECOLOR, config.getThemeColor());
             obj.put(Config.CONFIG_IS_TTS,config.isShowTts());
+            obj.put(Config.CONFIG_ALLOW_SHOWCASES,config.isAllowShowcases());
             SharedPreferenceUtil.
                     putSharedPreferencesString(
                             context, Config.INTENT_CONFIG, obj.toString());

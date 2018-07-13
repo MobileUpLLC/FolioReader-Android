@@ -90,4 +90,10 @@
     <string name="dictionary">Dictionary</string>
     <string name="wikipedia">Wikipedia</string>
     <string name="cannot_access_epub_message">Cannot open epub it needs storage access !</string>
+
+    <string name="showcase_table_of_contents_title">Open the table of contents</string>
+    <string name="showcase_table_of_contents_description">to find the topic of your interest</string>
+    <string name="showcase_config_title">Configure the font</string>
+    <string name="showcase_config_description">and other reading options</string>
+
 </resources>

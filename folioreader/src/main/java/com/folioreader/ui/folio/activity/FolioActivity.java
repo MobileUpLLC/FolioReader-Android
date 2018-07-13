@@ -29,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -74,6 +75,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 import static com.folioreader.Constants.CHAPTER_SELECTED;
 import static com.folioreader.Constants.HIGHLIGHT_SELECTED;
 import static com.folioreader.Constants.SELECTED_CHAPTER_POSITION;
@@ -91,6 +96,9 @@ public class FolioActivity
     public static final String INTENT_EPUB_SOURCE_PATH = "com.folioreader.epub_asset_path";
     public static final String INTENT_EPUB_SOURCE_TYPE = "epub_source_type";
     public static final String INTENT_HIGHLIGHTS_LIST = "highlight_list";
+
+    private static final String SHOWCASE_SEQUENCE = "showcase_sequence";
+    private static final int DEFAULT_SHOWCASE_DELAY_IN_MILLIS = 500;
 
     public enum EpubSourceType {
         RAW,
@@ -145,6 +153,10 @@ public class FolioActivity
 
         if (!mConfig.isShowTts()) {
             findViewById(R.id.btn_speaker).setVisibility(View.GONE);
+        }
+
+        if (mConfig.isAllowShowcases()) {
+            initShowcases();
         }
 
         title = (TextView) findViewById(R.id.lbl_center);
@@ -217,6 +229,75 @@ public class FolioActivity
         } catch (IOException e) {
             Log.e(TAG, "initBook failed", e);
         }
+    }
+
+    private ShowcaseConfig createShowcaseConfig() {
+        ShowcaseConfig showcaseConfig = new ShowcaseConfig();
+        showcaseConfig.setContentTextAppearance(R.style.Text_Highlight_Title);
+        showcaseConfig.setContentTextAppearance(R.style.Text_Highlight_Content);
+
+        int textColor = ContextCompat.getColor(this, R.color.showcase_text);
+        int maskColor = ContextCompat.getColor(this, R.color.showcase_mask);
+
+        showcaseConfig.setTitleTextColor(textColor);
+        showcaseConfig.setContentTextColor(textColor);
+        showcaseConfig.setMaskColour(maskColor);
+        showcaseConfig.setDelay(DEFAULT_SHOWCASE_DELAY_IN_MILLIS);
+        return showcaseConfig;
+    }
+
+    private void initShowcases() {
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_SEQUENCE);
+
+        ShowcaseConfig showcaseConfig = createShowcaseConfig();
+
+        sequence.setConfig(showcaseConfig);
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setConfing(showcaseConfig)
+                        .setTarget(findViewById(R.id.btn_drawer))
+                        .setTitleText(R.string.showcase_table_of_contents_title)
+                        .setContentText(R.string.showcase_table_of_contents_description)
+                        .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
+                        .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
+                        .setTopImage(R.drawable.im_table_of_contents_showcase_arrow)
+                        .setTopImageGravity(Gravity.START)
+                        .setTopImageMargins(
+                                getResources().getDimensionPixelOffset(R.dimen.showcase_table_of_content_start_margin),
+                                0,
+                                getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
+                                0
+                        )
+                        .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
+                        .setDismissOnTouch(true)
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setConfing(showcaseConfig)
+                        .setTarget(findViewById(R.id.btn_config))
+                        .setTitleText(R.string.showcase_config_title)
+                        .setContentText(R.string.showcase_config_description)
+                        .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
+                        .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
+                        .setEndImage(R.drawable.im_config_showcase_arrow)
+                        .setEndImageGravity(Gravity.TOP)
+                        .setTopImageMargins(
+                                getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
+                                0,
+                                getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
+                                0
+                        )
+                        .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
+                        .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
+                        .setDismissOnTouch(true)
+                        .build()
+        );
+
+        sequence.start();
     }
 
     private void addEpub(String path) throws IOException {
@@ -439,11 +520,11 @@ public class FolioActivity
     }
 
     private void setConfig() {
-        if (AppUtil.getSavedConfig(this) != null) {
-            mConfig = AppUtil.getSavedConfig(this);
-        } else if (getIntent().getParcelableExtra(Config.INTENT_CONFIG) != null) {
+        if (getIntent().getParcelableExtra(Config.INTENT_CONFIG) != null) {
             mConfig = getIntent().getParcelableExtra(Config.INTENT_CONFIG);
             AppUtil.saveConfig(this, mConfig);
+        } else if (AppUtil.getSavedConfig(this) != null) {
+            mConfig = AppUtil.getSavedConfig(this);
         } else {
             mConfig = new Config.ConfigBuilder().build();
             AppUtil.saveConfig(this, mConfig);
