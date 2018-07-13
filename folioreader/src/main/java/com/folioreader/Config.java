@@ -15,19 +15,22 @@ public class Config implements Parcelable {
     public static final String CONFIG_IS_NIGHTMODE = "is_night_mode";
     public static final String CONFIG_IS_THEMECOLOR = "theme_color";
     public static final String CONFIG_IS_TTS = "is_tts";
+    public static final String CONFIG_ALLOW_SHOWCASES = "allow_showcases";
     public static final String INTENT_PORT = "port";
     private int font;
     private int fontSize;
     private boolean nightMode;
     private int themeColor;
     private boolean showTts;
+    private boolean allowShowcases;
 
-    public Config(int font, int fontSize, boolean nightMode, int iconcolor, boolean showTts) {
+    public Config(int font, int fontSize, boolean nightMode, int iconcolor, boolean showTts, boolean allowShowcases) {
         this.font = font;
         this.fontSize = fontSize;
         this.nightMode = nightMode;
         this.themeColor = iconcolor;
         this.showTts = showTts;
+        this.allowShowcases = allowShowcases;
     }
 
     private Config(ConfigBuilder configBuilder) {
@@ -36,6 +39,7 @@ public class Config implements Parcelable {
         nightMode = configBuilder.mNightMode;
         themeColor = configBuilder.mThemeColor;
         showTts = configBuilder.mShowTts;
+        allowShowcases = configBuilder.mAllowShowcases;
     }
 
     public Config(JSONObject jsonObject) {
@@ -44,6 +48,7 @@ public class Config implements Parcelable {
         nightMode = jsonObject.optBoolean(CONFIG_IS_NIGHTMODE);
         themeColor = jsonObject.optInt(CONFIG_IS_THEMECOLOR);
         showTts = jsonObject.optBoolean(CONFIG_IS_TTS);
+        allowShowcases = jsonObject.optBoolean(CONFIG_ALLOW_SHOWCASES);
     }
 
     private Config() {
@@ -52,6 +57,7 @@ public class Config implements Parcelable {
         nightMode = false;
         themeColor = R.color.app_green;
         showTts = true;
+        allowShowcases = true;
     }
 
     private Config(Parcel in) {
@@ -100,6 +106,14 @@ public class Config implements Parcelable {
         this.showTts = showTts;
     }
 
+    public boolean isAllowShowcases() {
+        return allowShowcases;
+    }
+
+    public void setAllowShowcases(boolean allowShowcases) {
+        this.allowShowcases = allowShowcases;
+    }
+
     @Override
 
     public boolean equals(Object o) {
@@ -108,7 +122,7 @@ public class Config implements Parcelable {
 
         Config config = (Config) o;
 
-        return font == config.font && fontSize == config.fontSize && nightMode == config.nightMode;
+        return font == config.font && fontSize == config.fontSize && nightMode == config.nightMode && allowShowcases == config.allowShowcases;
     }
 
     @Override
@@ -118,6 +132,8 @@ public class Config implements Parcelable {
                 + fontSize;
         result = 31 * result
                 + (nightMode ? 1 : 0);
+        result = 31 * result
+                + (allowShowcases ? 1 : 0);
         return result;
     }
 
@@ -128,6 +144,7 @@ public class Config implements Parcelable {
                 + font
                 + ", fontSize=" + fontSize
                 + ", nightMode=" + nightMode
+                + ", allowShowcases=" + allowShowcases
                 + '}';
     }
 
@@ -143,6 +160,7 @@ public class Config implements Parcelable {
         dest.writeInt(nightMode ? 1 : 0);
         dest.writeInt(themeColor);
         dest.writeInt(showTts ? 1 : 0);
+        dest.writeInt(allowShowcases ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -151,6 +169,7 @@ public class Config implements Parcelable {
         nightMode = in.readInt() == 1;
         themeColor = in.readInt();
         showTts = in.readInt() == 1;
+        allowShowcases = in.readInt() == 1;
     }
 
     public static final Creator<Config> CREATOR = new Creator<Config>() {
@@ -171,6 +190,7 @@ public class Config implements Parcelable {
         private boolean mNightMode = false;
         private int mThemeColor = R.color.app_green;
         private boolean mShowTts = true;
+        private boolean mAllowShowcases = true;
 
         public ConfigBuilder font(int font) {
             mFont = font;
@@ -194,6 +214,11 @@ public class Config implements Parcelable {
 
         public ConfigBuilder setShowTts(boolean showTts) {
             mShowTts = showTts;
+            return this;
+        }
+
+        public ConfigBuilder setAllowShowcases(boolean allowShowcases) {
+            mAllowShowcases = allowShowcases;
             return this;
         }
 

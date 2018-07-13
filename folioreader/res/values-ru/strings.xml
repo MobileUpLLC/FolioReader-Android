@@ -41,4 +41,11 @@
     <string name="please_enter_note">пожалуйста введите заметку</string>
     <string name="contents">Содержание</string>
 
+    <string name="cannot_access_epub_message">Не удалось открыть книгу. Требуется доступ к хранилищу.</string>
+
+    <string name="showcase_table_of_contents_title">Открывайте оглавление</string>
+    <string name="showcase_table_of_contents_description">чтобы найти интересующую вас тему</string>
+    <string name="showcase_config_title">Настройте шрифт</string>
+    <string name="showcase_config_description">и другие параметры чтения</string>
+
 </resources>
