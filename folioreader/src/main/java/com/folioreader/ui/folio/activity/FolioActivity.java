@@ -285,13 +285,12 @@ public class FolioActivity
                         .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
                         .setEndImage(R.drawable.im_config_showcase_arrow)
                         .setEndImageGravity(Gravity.TOP)
-                        .setTopImageMargins(
+                        .setEndImageMargins(
                                 getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
                                 0,
-                                getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
+                                getResources().getDimensionPixelOffset(R.dimen.showcase_config_end_margin),
                                 0
                         )
-                        .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
                         .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
                         .setDismissOnTouch(true)
                         .build()
