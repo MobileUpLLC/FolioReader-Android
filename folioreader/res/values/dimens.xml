@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="showcase_target_padding">16dp</dimen>
+    <dimen name="showcase_target_padding">15dp</dimen>
     <dimen name="showcase_table_of_content_start_margin">48dp</dimen>
     <dimen name="showcase_default_image_margin">16dp</dimen>
 </resources>
