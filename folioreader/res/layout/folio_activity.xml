@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:id="@+id/folioPageViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:direction="vertical" />
+        app:direction="vertical"/>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -44,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_close_green_24dp" />
+                    android:src="@drawable/ic_close_green_24dp"/>
 
                 <ImageView
                     android:id="@+id/btn_drawer"
@@ -53,7 +54,7 @@
                     android:layout_marginBottom="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_drawer_green_24dp" />
+                    android:src="@drawable/ic_drawer_green_24dp"/>
             </LinearLayout>
 
             <TextView
@@ -69,45 +70,49 @@
                 android:text="Folio Reader"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <ImageView
                     android:id="@+id/btn_config"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/toolbar_menu_icon_size"
+                    android:layout_height="@dimen/toolbar_menu_icon_size"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/icon_font" />
+                    android:src="@drawable/icon_font"/>
 
                 <ImageView
                     android:id="@+id/btn_speaker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/man_speech_icon" />
+                    android:layout_width="@dimen/toolbar_menu_icon_size"
+                    android:layout_height="@dimen/toolbar_menu_icon_size"
+                    android:layout_marginBottom="@dimen/toolbar_icon_margin"
+                    android:layout_marginStart="@dimen/toolbar_icon_margin"
+                    android:layout_marginTop="@dimen/toolbar_icon_margin"
+                    android:src="@drawable/man_speech_icon"/>
+
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_alignParentBottom="true"
-                android:background="@android:color/black" />
+                android:background="@android:color/black"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:id="@+id/shade"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/shade"
-        android:visibility="gone"
-        android:background="#99000000">
+        android:background="#99000000"
+        android:visibility="gone">
 
-        <include layout="@layout/view_audio_player" />
+        <include layout="@layout/view_audio_player"/>
     </RelativeLayout>
 </RelativeLayout>
