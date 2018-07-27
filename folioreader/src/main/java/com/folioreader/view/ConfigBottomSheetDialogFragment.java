@@ -12,6 +12,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,13 @@ import com.folioreader.Constants;
 import com.folioreader.R;
 import com.folioreader.model.event.ReloadDataEvent;
 import com.folioreader.util.AppUtil;
+import com.folioreader.util.ShowcaseUtil;
 import com.folioreader.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 /**
@@ -41,6 +46,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
     public static final int DAY_BUTTON = 30;
     public static final int NIGHT_BUTTON = 31;
     private static final int FADE_DAY_NIGHT_MODE = 500;
+    private static final String SHOWCASE_ID = "showcase_id";
 
     private CoordinatorLayout.Behavior mBehavior;
     private boolean mIsNightMode = false;
@@ -82,12 +88,37 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
         mDialogView = view;
         mConfig = AppUtil.getSavedConfig(getActivity());
         initViews();
+        presentShowcase(view);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mDialogView.getViewTreeObserver().addOnGlobalLayoutListener(null);
+    }
+
+    public void presentShowcase(View view) {
+
+        if (mConfig.isAllowShowcases()) {
+
+            View targetView = view.findViewById(R.id.container);
+
+            ShowcaseConfig config = ShowcaseUtil.createShowcaseConfig(getContext());
+
+            new MaterialShowcaseView.Builder(this.getActivity())
+                    .setConfing(config)
+                    .setTarget(targetView)
+                    .setTitleText(R.string.showcase_config_title)
+                    .setContentText(R.string.showcase_config_description)
+                    .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
+                    .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
+                    .setShapePadding(0)
+                    .setDismissOnTouch(true)
+                    .withRectangleShape()
+                    .useFadeAnimation()
+                    .singleUse(SHOWCASE_ID)
+                    .show(this);
+        }
     }
 
     private void initViews() {
@@ -210,7 +241,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
         mConfig.setFont(selectedFont);
         //if (mConfigDialogCallback != null) mConfigDialogCallback.onConfigChange();
         if (isAdded() && isReloadNeeded) {
-            AppUtil.saveConfig(getActivity(),mConfig);
+            AppUtil.saveConfig(getActivity(), mConfig);
             EventBus.getDefault().post(new ReloadDataEvent());
         }
     }
@@ -243,7 +274,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
             public void onAnimationEnd(Animator animator) {
                 mIsNightMode = !mIsNightMode;
                 mConfig.setNightMode(mIsNightMode);
-                AppUtil.saveConfig(getActivity(),mConfig);
+                AppUtil.saveConfig(getActivity(), mConfig);
                 EventBus.getDefault().post(new ReloadDataEvent());
             }
 
@@ -270,7 +301,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mConfig.setFontSize(progress);
-                AppUtil.saveConfig(getActivity(),mConfig);
+                AppUtil.saveConfig(getActivity(), mConfig);
                 EventBus.getDefault().post(new ReloadDataEvent());
             }
 
