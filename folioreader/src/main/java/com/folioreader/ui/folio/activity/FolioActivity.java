@@ -57,6 +57,7 @@ import com.folioreader.ui.folio.presenter.MainPresenter;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.FileUtil;
 import com.folioreader.util.FolioReader;
+import com.folioreader.util.ShowcaseUtil;
 import com.folioreader.util.UiUtil;
 import com.folioreader.view.ConfigBottomSheetDialogFragment;
 import com.folioreader.view.DirectionalViewpager;
@@ -98,7 +99,6 @@ public class FolioActivity
     public static final String INTENT_HIGHLIGHTS_LIST = "highlight_list";
 
     private static final String SHOWCASE_SEQUENCE = "showcase_sequence";
-    private static final int DEFAULT_SHOWCASE_DELAY_IN_MILLIS = 500;
 
     public enum EpubSourceType {
         RAW,
@@ -231,26 +231,11 @@ public class FolioActivity
         }
     }
 
-    private ShowcaseConfig createShowcaseConfig() {
-        ShowcaseConfig showcaseConfig = new ShowcaseConfig();
-        showcaseConfig.setContentTextAppearance(R.style.Text_Highlight_Title);
-        showcaseConfig.setContentTextAppearance(R.style.Text_Highlight_Content);
-
-        int textColor = ContextCompat.getColor(this, R.color.showcase_text);
-        int maskColor = ContextCompat.getColor(this, R.color.showcase_mask);
-
-        showcaseConfig.setTitleTextColor(textColor);
-        showcaseConfig.setContentTextColor(textColor);
-        showcaseConfig.setMaskColour(maskColor);
-        showcaseConfig.setDelay(DEFAULT_SHOWCASE_DELAY_IN_MILLIS);
-        return showcaseConfig;
-    }
-
     private void initShowcases() {
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_SEQUENCE);
 
-        ShowcaseConfig showcaseConfig = createShowcaseConfig();
+        ShowcaseConfig showcaseConfig = ShowcaseUtil.createShowcaseConfig(this);
 
         sequence.setConfig(showcaseConfig);
 
@@ -259,9 +244,7 @@ public class FolioActivity
                         .setConfing(showcaseConfig)
                         .setTarget(findViewById(R.id.btn_drawer))
                         .setTitleText(R.string.showcase_table_of_contents_title)
-                        .setContentText(R.string.showcase_table_of_contents_description)
                         .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
-                        .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
                         .setTopImage(R.drawable.im_table_of_contents_showcase_arrow)
                         .setTopImageGravity(Gravity.START)
                         .setTopImageMargins(
@@ -279,8 +262,8 @@ public class FolioActivity
                 new MaterialShowcaseView.Builder(this)
                         .setConfing(showcaseConfig)
                         .setTarget(findViewById(R.id.btn_config))
-                        .setTitleText(R.string.showcase_config_title)
-                        .setContentText(R.string.showcase_config_description)
+                        .setTitleText(R.string.showcase_config_button_title)
+                        .setContentText(R.string.showcase_config_button_description)
                         .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
                         .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
                         .setEndImage(R.drawable.im_config_showcase_arrow)
