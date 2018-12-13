@@ -240,7 +240,7 @@ public class FolioActivity
 
             @Override
             public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
-                materialShowcaseView.setBackground(materialShowcaseView.getResources().getDrawable(R.drawable.bg_rounded_button, null));
+                materialShowcaseView.findViewById(R.id.button_dismiss).setBackground(materialShowcaseView.getResources().getDrawable(R.drawable.bg_rounded_button, null));
             }
 
             @Override
@@ -255,7 +255,7 @@ public class FolioActivity
                 .setTitleText(R.string.showcase_table_of_contents_title)
                 .setContentText(R.string.showcase_table_of_contents_description)
                 .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
-                .setBottomImageGravity(Gravity.CENTER_HORIZONTAL)
+                .setDismissButtonGravity(Gravity.CENTER_HORIZONTAL)
                 .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
                 .setTopImage(R.drawable.im_table_of_contents_showcase_arrow)
                 .setTopImageGravity(Gravity.START)
@@ -276,7 +276,7 @@ public class FolioActivity
                 .setTitleText(R.string.showcase_config_button_title)
                 .setContentText(R.string.showcase_config_button_description)
                 .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
-                .setBottomImageGravity(Gravity.CENTER_HORIZONTAL)
+                .setDismissButtonGravity(Gravity.CENTER_HORIZONTAL)
                 .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
                 .setEndImage(R.drawable.im_config_showcase_arrow)
                 .setEndImageGravity(Gravity.TOP)

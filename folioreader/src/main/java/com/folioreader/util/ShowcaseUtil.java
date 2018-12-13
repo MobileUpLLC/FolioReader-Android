@@ -17,10 +17,12 @@ public class ShowcaseUtil {
 
         int textColor = ContextCompat.getColor(context, R.color.showcase_text);
         int maskColor = ContextCompat.getColor(context, R.color.showcase_mask);
+        int dismisColor = ContextCompat.getColor(context, R.color.showcase_accent);
 
         showcaseConfig.setTitleTextColor(textColor);
         showcaseConfig.setContentTextColor(textColor);
         showcaseConfig.setMaskColour(maskColor);
+        showcaseConfig.setDismissButtonColor(dismisColor);
         int DEFAULT_SHOWCASE_DELAY_IN_MILLIS = 500;
         showcaseConfig.setDelay(DEFAULT_SHOWCASE_DELAY_IN_MILLIS);
         return showcaseConfig;

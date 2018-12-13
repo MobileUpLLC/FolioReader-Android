@@ -113,7 +113,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
                     .setContentText(R.string.showcase_config_description)
                     .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
                     .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
-                    .setBottomImageGravity(Gravity.CENTER_HORIZONTAL)
+                    .setDismissButtonGravity(Gravity.CENTER_HORIZONTAL)
                     .setShapePadding(0)
                     .setDismissText(R.string.showcase_ok)
                     .withRectangleShape()
@@ -124,7 +124,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
             showcase.addShowcaseListener(new IShowcaseListener() {
                 @Override
                 public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
-                    materialShowcaseView.setBackground(materialShowcaseView.getResources().getDrawable(R.drawable.bg_rounded_button, null));
+                    materialShowcaseView.findViewById(R.id.button_dismiss).setBackground(materialShowcaseView.getResources().getDrawable(R.drawable.bg_rounded_button, null));
                 }
 
                 @Override
