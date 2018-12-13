@@ -119,6 +119,7 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
                     .withRectangleShape()
                     .useFadeAnimation()
                     .singleUse(SHOWCASE_ID)
+                    .useFadeAnimation()
                     .build();
 
             showcase.addShowcaseListener(new IShowcaseListener() {

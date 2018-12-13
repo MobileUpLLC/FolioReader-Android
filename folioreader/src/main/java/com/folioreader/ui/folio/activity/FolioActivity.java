@@ -267,6 +267,7 @@ public class FolioActivity
                 )
                 .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
                 .setDismissText(R.string.showcase_next)
+                .useFadeAnimation()
                 .build();
         firstShowcase.addShowcaseListener(showcaseListener);
 
@@ -288,6 +289,7 @@ public class FolioActivity
                 )
                 .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
                 .setDismissText(R.string.showcase_ok)
+                .useFadeAnimation()
                 .build();
         secondShowcase.addShowcaseListener(showcaseListener);
 
