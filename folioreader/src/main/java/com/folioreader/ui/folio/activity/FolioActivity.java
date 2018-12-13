@@ -76,6 +76,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -233,52 +234,67 @@ public class FolioActivity
 
     private void initShowcases() {
 
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_SEQUENCE);
+        final MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_SEQUENCE);
+        final ShowcaseConfig showcaseConfig = ShowcaseUtil.createShowcaseConfig(this);
+        final IShowcaseListener showcaseListener = new IShowcaseListener() {
 
-        ShowcaseConfig showcaseConfig = ShowcaseUtil.createShowcaseConfig(this);
+            @Override
+            public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
+                materialShowcaseView.setBackground(materialShowcaseView.getResources().getDrawable(R.drawable.bg_rounded_button, null));
+            }
+
+            @Override
+            public void onShowcaseDismissed(MaterialShowcaseView materialShowcaseView) {
+                // do nothing
+            }
+        };
+
+        final MaterialShowcaseView firstShowcase = new MaterialShowcaseView.Builder(this)
+                .setConfing(showcaseConfig)
+                .setTarget(findViewById(R.id.btn_drawer))
+                .setTitleText(R.string.showcase_table_of_contents_title)
+                .setContentText(R.string.showcase_table_of_contents_description)
+                .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
+                .setBottomImageGravity(Gravity.CENTER_HORIZONTAL)
+                .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
+                .setTopImage(R.drawable.im_table_of_contents_showcase_arrow)
+                .setTopImageGravity(Gravity.START)
+                .setTopImageMargins(
+                        getResources().getDimensionPixelOffset(R.dimen.showcase_table_of_content_start_margin),
+                        0,
+                        getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
+                        0
+                )
+                .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
+                .setDismissText(R.string.showcase_next)
+                .build();
+        firstShowcase.addShowcaseListener(showcaseListener);
+
+        final MaterialShowcaseView secondShowcase = new MaterialShowcaseView.Builder(this)
+                .setConfing(showcaseConfig)
+                .setTarget(findViewById(R.id.btn_config))
+                .setTitleText(R.string.showcase_config_button_title)
+                .setContentText(R.string.showcase_config_button_description)
+                .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
+                .setBottomImageGravity(Gravity.CENTER_HORIZONTAL)
+                .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
+                .setEndImage(R.drawable.im_config_showcase_arrow)
+                .setEndImageGravity(Gravity.TOP)
+                .setEndImageMargins(
+                        getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
+                        0,
+                        getResources().getDimensionPixelOffset(R.dimen.showcase_config_end_margin),
+                        0
+                )
+                .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
+                .setDismissText(R.string.showcase_ok)
+                .build();
+        secondShowcase.addShowcaseListener(showcaseListener);
+
 
         sequence.setConfig(showcaseConfig);
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setConfing(showcaseConfig)
-                        .setTarget(findViewById(R.id.btn_drawer))
-                        .setTitleText(R.string.showcase_table_of_contents_title)
-                        .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
-                        .setTopImage(R.drawable.im_table_of_contents_showcase_arrow)
-                        .setTopImageGravity(Gravity.START)
-                        .setTopImageMargins(
-                                getResources().getDimensionPixelOffset(R.dimen.showcase_table_of_content_start_margin),
-                                0,
-                                getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
-                                0
-                        )
-                        .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
-                        .setDismissOnTouch(true)
-                        .build()
-        );
-
-        sequence.addSequenceItem(
-                new MaterialShowcaseView.Builder(this)
-                        .setConfing(showcaseConfig)
-                        .setTarget(findViewById(R.id.btn_config))
-                        .setTitleText(R.string.showcase_config_button_title)
-                        .setContentText(R.string.showcase_config_button_description)
-                        .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
-                        .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
-                        .setEndImage(R.drawable.im_config_showcase_arrow)
-                        .setEndImageGravity(Gravity.TOP)
-                        .setEndImageMargins(
-                                getResources().getDimensionPixelOffset(R.dimen.showcase_default_image_margin),
-                                0,
-                                getResources().getDimensionPixelOffset(R.dimen.showcase_config_end_margin),
-                                0
-                        )
-                        .setShapePadding(getResources().getDimensionPixelOffset(R.dimen.showcase_target_padding))
-                        .setDismissOnTouch(true)
-                        .build()
-        );
-
+        sequence.addSequenceItem(firstShowcase);
+        sequence.addSequenceItem(secondShowcase);
         sequence.start();
     }
 

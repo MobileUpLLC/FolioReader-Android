@@ -10,4 +10,6 @@
 
     <dimen name="toolbar_icon_margin">16dp</dimen>
     <dimen name="toolbar_menu_icon_size">24dp</dimen>
+    <dimen name="rounded_button_corner_radius">24dp</dimen>
+    <dimen name="rounded_button_height">48dp</dimen>
 </resources>

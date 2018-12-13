@@ -33,6 +33,7 @@ import com.folioreader.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
@@ -105,19 +106,34 @@ public class ConfigBottomSheetDialogFragment extends BottomSheetDialogFragment i
 
             ShowcaseConfig config = ShowcaseUtil.createShowcaseConfig(getContext());
 
-            new MaterialShowcaseView.Builder(this.getActivity())
+            final MaterialShowcaseView showcase = new MaterialShowcaseView.Builder(this.getActivity())
                     .setConfing(config)
                     .setTarget(targetView)
                     .setTitleText(R.string.showcase_config_title)
                     .setContentText(R.string.showcase_config_description)
                     .setTitleTextGravity(Gravity.CENTER_HORIZONTAL)
                     .setContentTextGravity(Gravity.CENTER_HORIZONTAL)
+                    .setBottomImageGravity(Gravity.CENTER_HORIZONTAL)
                     .setShapePadding(0)
-                    .setDismissOnTouch(true)
+                    .setDismissText(R.string.showcase_ok)
                     .withRectangleShape()
                     .useFadeAnimation()
                     .singleUse(SHOWCASE_ID)
-                    .show(this);
+                    .build();
+
+            showcase.addShowcaseListener(new IShowcaseListener() {
+                @Override
+                public void onShowcaseDisplayed(MaterialShowcaseView materialShowcaseView) {
+                    materialShowcaseView.setBackground(materialShowcaseView.getResources().getDrawable(R.drawable.bg_rounded_button, null));
+                }
+
+                @Override
+                public void onShowcaseDismissed(MaterialShowcaseView materialShowcaseView) {
+                    // do nothing
+                }
+            });
+
+            showcase.show(this);
         }
     }
 

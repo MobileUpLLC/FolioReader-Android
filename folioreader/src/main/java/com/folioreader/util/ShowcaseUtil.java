@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.folioreader.R;
 
+import uk.co.deanwild.materialshowcaseview.IShowcaseListener;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ShowcaseUtil {

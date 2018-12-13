@@ -88,10 +88,13 @@
 
     <string name="cannot_access_epub_message">Не удалось открыть книгу. Требуется доступ к хранилищу.</string>
 
-    <string name="showcase_table_of_contents_title">Используйте возможность быстрого перехода к конкретной главе и к Вашим заметкам</string>
+    <string name="showcase_table_of_contents_title">Используйте содержание</string>
+    <string name="showcase_table_of_contents_description">для перехода к нужной главе или Вашим заметкам</string>
     <string name="showcase_config_button_title">Настройте шрифт</string>
     <string name="showcase_config_button_description">и другие параметры чтения</string>
-    <string name="showcase_config_title">Настройте удобный Вам режим чтения:</string>
-    <string name="showcase_config_description">день/ночь (цвет фона), размер и тип шрифта</string>
+    <string name="showcase_config_title">Настройте удобный Вам режим чтения:</string>
+    <string name="showcase_config_description">день/ночь (цвет фона), размер и тип шрифта, способ перелистывания страниц (вертикальный или горизонтальный)</string>
+    <string name="showcase_next">Далее</string>
+    <string name="showcase_ok">Ок</string>
 
 </resources>
